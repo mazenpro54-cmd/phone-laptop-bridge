@@ -5,10 +5,10 @@ echo Starting Cloudflare Tunnel to your Laptop Bridge...
 echo Look for the URL ending with .trycloudflare.com below!
 echo.
 if exist "C:\Program Files (x86)\cloudflared\cloudflared.exe" (
-    "C:\Program Files (x86)\cloudflared\cloudflared.exe" tunnel --url http://localhost:8000
+    "C:\Program Files (x86)\cloudflared\cloudflared.exe" tunnel --url http://127.0.0.1:8000
 ) else if exist "C:\Program Files\cloudflared\cloudflared.exe" (
-    "C:\Program Files\cloudflared\cloudflared.exe" tunnel --url http://localhost:8000
+    "C:\Program Files\cloudflared\cloudflared.exe" tunnel --url http://127.0.0.1:8000
 ) else (
-    cloudflared tunnel --url http://localhost:8000
+    cloudflared tunnel --url http://127.0.0.1:8000
 )
 pause
