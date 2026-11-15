@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Laptop Remote</title>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+  <!-- Top App Header -->
+  <header>
+    <div class="brand">
+      <div class="brand-icon">💻</div>
+      <div class="brand-text">
+        <h1 id="info-hostname">Laptop Bridge</h1>
+        <span id="info-ip">Detecting...</span>
+      </div>
+    </div>
+    <div id="status-badge" class="status-badge">
+      <div class="status-dot"></div>
+      <span id="status-text">Connecting</span>
+    </div>
+  </header>
+
+  <!-- Navigation Bar -->
+  <nav class="nav-bar">
+    <div class="nav-item active" data-tab="tab-power">⚡ Power & Lock</div>
+    <div class="nav-item" data-tab="tab-touchpad">🖱️ Trackpad</div>
+    <div class="nav-item" data-tab="tab-screen">🖥️ Screen</div>
+    <div class="nav-item" data-tab="tab-media">🎵 Media & Apps</div>
+    <div class="nav-item" data-tab="tab-wol">📡 Wake Guide</div>
+  </nav>
+
+  <!-- Main Views Container -->
+  <main>
+
+    <!-- Tab 1: Power & Unlock -->
+    <section id="tab-power" class="tab-pane active">
+      <div class="card">
+        <div class="card-title">Quick Actions</div>
+        <div class="actions-grid">
+          
+          <button id="btn-unlock" class="action-btn unlock-btn">
+            <span class="btn-icon">🔓</span>
+            <span class="btn-title">Unlock PC</span>
+            <span class="btn-desc">Wake & enter PIN</span>
+          </button>
+
+          <button id="btn-wake-display" class="action-btn wake-btn">
+            <span class="btn-icon">💡</span>
+            <span class="btn-title">Wake Screen</span>
+            <span class="btn-desc">Turn on display</span>
+          </button>
+
+          <button id="btn-lock" class="action-btn lock-btn">
+            <span class="btn-icon">🔒</span>
+            <span class="btn-title">Lock Windows</span>
+            <span class="btn-desc">Secure workstation</span>
+          </button>
+
+          <button id="btn-sleep" class="action-btn sleep-btn">
+            <span class="btn-icon">🌙</span>
+            <span class="btn-title">Sleep</span>
+            <span class="btn-desc">Standby mode</span>
+          </button>
+
+          <button id="btn-restart" class="action-btn">
+            <span class="btn-icon">🔄</span>
+            <span class="btn-title">Restart</span>
+            <span class="btn-desc">Reboot system</span>
+          </button>
+
+          <button id="btn-shutdown" class="action-btn danger-btn">
+            <span class="btn-icon">🛑</span>
+            <span class="btn-title">Shutdown</span>
+            <span class="btn-desc">Power off PC</span>
+          </button>
+
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🌐 Cloud & Remote Host URL (Vercel)</div>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">
+          When accessing this app from Vercel over cellular / internet, enter your laptop's public tunnel URL below (leave blank when on the same Wi-Fi):
+        </p>
+        <div class="text-sender">
+          <input type="text" id="host-url-input" placeholder="e.g. https://mazen.trycloudflare.com">
+          <button id="btn-save-host">Set</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">One-Tap Unlock Configuration</div>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">
+          Save your Windows PIN here so tapping <b>Unlock PC</b> instantly signs you into Windows without prompting every time.
+        </p>
+        <div class="text-sender">
+          <input type="password" id="settings-pin" placeholder="Enter Windows PIN">
+          <button id="btn-save-pin">Save</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 2: Trackpad & Keyboard -->
+    <section id="tab-touchpad" class="tab-pane">
+      <div class="touchpad-wrapper">
+        <div id="touchpad" class="touchpad">
+          <div class="touchpad-hint">
+            <b>Touchpad Area</b><br>
+            • 1 Finger: Move pointer<br>
+            • 1 Tap: Left click<br>
+            • 2 Finger Tap: Right click<br>
+            • 2 Finger Drag: Scroll
+          </div>
+        </div>
+
+        <div class="mouse-buttons">
+          <button id="btn-left-click" class="mouse-btn">Left Click</button>
+          <button id="btn-right-click" class="mouse-btn">Right Click</button>
+        </div>
+
+        <!-- Quick Hotkeys -->
+        <div class="quick-keys">
+          <button class="key-btn" data-key="esc">ESC</button>
+          <button class="key-btn" data-hotkey="win+d">Desktop</button>
+          <button class="key-btn" data-hotkey="alt+tab">Alt+Tab</button>
+          <button class="key-btn" data-key="enter">Enter</button>
+          <button class="key-btn" data-key="backspace">⌫ Del</button>
+          <button class="key-btn" data-key="space">Space</button>
+          <button class="key-btn" data-key="up">▲</button>
+          <button class="key-btn" data-key="down">▼</button>
+        </div>
+
+        <!-- Text sender -->
+        <div class="text-sender">
+          <input type="text" id="text-input" placeholder="Type text to send to PC...">
+          <button id="btn-send-text">Send</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 3: Screen Mirror -->
+    <section id="tab-screen" class="tab-pane">
+      <div class="card screen-container">
+        <div class="card-title" style="width: 100%;">
+          <span>Desktop View</span>
+          <span style="font-size: 11px; color: var(--success);">● Live</span>
+        </div>
+        <canvas id="screen-canvas" class="screen-view"></canvas>
+        <div class="screen-controls">
+          <span style="font-size: 12px; color: var(--text-muted); align-self: center;">
+            Tap anywhere on the preview to click that spot on PC!
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 4: Media & App Shortcuts -->
+    <section id="tab-media" class="tab-pane">
+      <div class="card">
+        <div class="card-title">Media Playback</div>
+        <div class="media-deck">
+          <button id="media-prev" class="media-btn">⏮</button>
+          <button id="media-play-pause" class="media-btn play-btn">⏯</button>
+          <button id="media-next" class="media-btn">⏭</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Volume</div>
+        <div class="volume-grid">
+          <button id="vol-down" class="key-btn">🔉 Vol -</button>
+          <button id="vol-mute" class="key-btn">🔇 Mute</button>
+          <button id="vol-up" class="key-btn">🔊 Vol +</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Quick Launchers</div>
+        <div class="actions-grid">
+          <button class="action-btn app-btn" data-app="browser">
+            <span class="btn-icon">🌐</span>
+            <span class="btn-title">Browser</span>
+          </button>
+          <button class="action-btn app-btn" data-app="explorer">
+            <span class="btn-icon">📁</span>
+            <span class="btn-title">Files</span>
+          </button>
+          <button class="action-btn app-btn" data-app="taskmgr">
+            <span class="btn-icon">📊</span>
+            <span class="btn-title">Task Manager</span>
+          </button>
+          <button class="action-btn app-btn" data-app="notepad">
+            <span class="btn-icon">📝</span>
+            <span class="btn-title">Notepad</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 5: Wake-on-LAN Setup & Info -->
+    <section id="tab-wol" class="tab-pane">
+      <div class="card">
+        <div class="card-title">Laptop Network Credentials</div>
+        <div class="info-row">
+          <span class="info-label">Fixed iPhone URL:</span>
+          <span class="info-value" style="color: var(--primary);">http://mazen-laptop.local:8000</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Laptop IP:</span>
+          <span id="wol-guide-ip" class="info-value">...</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">MAC Address:</span>
+          <span id="wol-guide-mac" class="info-value">...</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">WoL Broadcast IP:</span>
+          <span class="info-value">255.255.255.255 (Universal)</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">UDP Port:</span>
+          <span class="info-value">9 (Standard WoL)</span>
+        </div>
+        <div style="margin-top: 14px;">
+          <button id="btn-send-wol" class="key-btn" style="width: 100%; padding: 12px; background: var(--primary);">
+            Test Wake-on-LAN Packet
+          </button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">How to Wake When Laptop is Sleeping</div>
+        <ol style="font-size: 13px; line-height: 1.6; padding-left: 18px; color: var(--text-muted);">
+          <li>
+            <b>Enable Wake on Wi-Fi in Windows:</b><br>
+            Open <i>Device Manager</i> &rarr; <i>Network Adapters</i> &rarr; Your Wi-Fi &rarr; <i>Properties</i> &rarr; <i>Power Management</i> tab &rarr; Check <b>"Allow this device to wake the computer"</b>.
+          </li>
+          <li style="margin-top: 8px;">
+            <b>When lid is closed:</b><br>
+            In Windows Search, open <i>"Change what closing the lid does"</i> &rarr; Set <i>"When I close the lid"</i> to <b>Do Nothing</b>.
+          </li>
+          <li style="margin-top: 8px;">
+            <b>Waking from your phone:</b><br>
+            Download any free Wake-on-LAN app (e.g. <i>"Wolow"</i> on iOS or <i>"Wake On Lan"</i> by Aquila on Android) and enter the <b>MAC Address</b> shown above. One tap will wake your PC from sleep!
+          </li>
+        </ol>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- PIN Prompt Modal -->
+  <div id="unlock-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-title">Unlock Windows</div>
+      <p style="font-size: 13px; color: var(--text-muted);">
+        Enter your Windows login PIN or password to sign in.
+      </p>
+      <input type="password" id="pin-input" placeholder="Windows PIN / Password">
+      <div class="modal-actions">
+        <button id="btn-modal-cancel" class="modal-cancel">Cancel</button>
+        <button id="btn-modal-unlock" class="modal-save">Unlock</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
